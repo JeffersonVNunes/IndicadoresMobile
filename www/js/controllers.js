@@ -1,6 +1,7 @@
 angular.module('indimobile.controllers',[])
 
 .controller('EntradaCtrl', function($scope, $state, TaskServer) {
+  $scope.servidor = TaskServer.servidor;
 
   $scope.submitForm = function(id_projeto) {
     TaskServer.autenticar(id_projeto).then(function(res){

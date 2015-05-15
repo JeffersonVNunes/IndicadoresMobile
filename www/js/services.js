@@ -6,8 +6,11 @@ angular.module('indimobile.services',[])
     id: -1,
     descricao: '',
     data_inicio: '',
-    data_termino: ''
+    data_termino: '',
+    servidor: ''
   }
+
+  projeto.servidor = SERVER;
 
   projeto.autenticar = function(id_projeto) {
       return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/Projeto/'+id_projeto);

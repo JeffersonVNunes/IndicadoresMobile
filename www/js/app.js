@@ -40,7 +40,7 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
 
 })
 .constant('SERVER', {
-  url: 'http://localhost:8080'
+  url: 'http://192.168.170.44:8080'
 });
 
 
