@@ -24,10 +24,15 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
         templateUrl: 'templates/entrada.html',
         controller: 'EntradaCtrl'
     })
-    .state('indi.menu', {
+    .state('indi-menu', {
       url: '/menu',
       templateUrl: 'templates/menu.html',
-      controller: 'MenuCtrl'
+      controller: 'MenuCtrl',
+      resolve: {
+        projeto: function(TaskServer) {
+          return TaskServer
+        }
+      }
     });
 
   // If none of the above states are matched, use this as the fallback:

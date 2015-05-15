@@ -9,10 +9,16 @@ angular.module('indimobile.services',[])
     data_termino: ''
   }
 
-  projeto.autenticar = function(projeto) {
-    return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/Projeto/'+projeto);
-   }
+  projeto.autenticar = function(id_projeto) {
+      return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/Projeto/'+id_projeto);
+  }
 
+  projeto.getIndicadores = function(id_projeto) {
+    if (id_projeto == undefined )
+      id_projeto = projeto.id;
+
+    return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/indicadores/'+id_projeto);
+  }
   return projeto;
 });
 
