@@ -20,7 +20,7 @@ angular.module('indimobile.controllers',[])
         TaskServer.data_inicio = res.data.datainicio;
         TaskServer.data_termino = res.data.datatermino;
 
-        $state.go('indi-menu');
+        $state.go('menu.indicadores');
 
       }, function () {
         // error handling here
@@ -32,7 +32,7 @@ angular.module('indimobile.controllers',[])
     }
   }
 })
-.controller('MenuCtrl', function($scope, $ionicPopup, $ionicModal, $state, projeto) {
+.controller('IndicadoresCtrl', function($scope, $ionicPopup, $ionicModal, $state, projeto) {
   $scope.projeto = projeto;
   $scope.dados = 'Não Carregado';
 
@@ -48,32 +48,30 @@ angular.module('indimobile.controllers',[])
 
       $scope.dados = res.data;
 
+      $ionicModal.fromTemplateUrl('templates/velochart.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(Modal) {
+        $scope.modal = Modal
+      });
+
+      $scope.openModal = function(sel_indi) {
+        $scope.sel_indi = sel_indi;
+        $scope.modal.show();
+      };
+
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
+
+      $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+      });
+
     }, function() {
       // error handling here
-      $scope.showAlert('Projeto não encontrado');
+      $scope.showAlert('Não foi possível carregar os indicadores');
     });
-
-    $ionicModal.fromTemplateUrl('templates/velochart.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function($ionicModal) {
-      $scope.modal = $ionicModal
-    });
-
-    $scope.openModal = function(sel_indi) {
-      $scope.sel_indi = sel_indi;
-
-      $scope.modal.show();
-    };
-
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
-
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
-
   };
 
   $scope.getCor = function(status){
@@ -86,6 +84,70 @@ angular.module('indimobile.controllers',[])
     }else{
       return '';
     }
-
   }
+
+  $scope.getIndicadores();
+})
+.controller('NaoConformidadesCtrl', function($scope, $ionicPopup, $ionicModal, $state, projeto) {
+  $scope.projeto = projeto;
+  $scope.dados = 'Não Carregado';
+
+  $scope.showAlert = function(mensagem) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Aviso',
+      template: mensagem
+    });
+  };
+
+  $scope.getNaoConformidades = function(){
+    projeto.getNaoConformidades().then(function(res){
+      $scope.dados = res.data;
+
+      $ionicModal.fromTemplateUrl('templates/des-naoconformidade.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(Modal) {
+        $scope.modal = Modal
+      });
+
+      $scope.openModal = function(sel_nc) {
+        $scope.sel_nc = sel_nc;
+
+        $scope.ResultadoFormatado = function(){
+          return $scope.sel_nc.resultado;
+        };
+        $scope.modal.show();
+      };
+
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
+
+      $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+      });
+
+    }, function() {
+      // error handling here
+      $scope.showAlert('Não foi possível carregar as não conformidades');
+    });
+  };
+
+  $scope.getCor = function(status){
+    if(status == 'OK'){
+      return 'bc-verde';
+    }else{
+      return 'bc-vermelho';
+    }
+  };
+
+  $scope.getResultado = function(resultado){
+    if(resultado != 'OK'){
+      return 'NOK';
+    }else{
+      return resultado;
+    }
+  };
+
+  $scope.getNaoConformidades();
 });

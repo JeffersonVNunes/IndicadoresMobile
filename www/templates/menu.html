@@ -1,35 +1,12 @@
-<ion-view >
-  <ion-nav-title>Projeto {{projeto.descricao}}</ion-nav-title>
-  <ion-content>
+<ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
-    <div class="list card">
-      <button class="button button-positive" ng-click="getIndicadores()">
-        Indicadores
-      </button>
-      <button class="button button-positive">
-        Não Conformidades
-      </button>
-    </div>
+  <ion-tab title="Indicadores" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/menu/indicadores">
+    <ion-nav-view name="menu-indicadores"></ion-nav-view>
+  </ion-tab>
 
-    <div class="list" ng-if="dados.resp">
-      <div class="row">
-        <div class="col col-20"><b>Sigla</b></div>
-        <div class="col col-33"><b>Descrição</b></div>
-        <div class="col col-10"><b>Valor</b></div>
-        <div class="col"><b>Faixa</b></div>
-        <div class="col"><b>Situação</b></div>
-        <div class="col"></div>
-      </div>
-      <div class="row {{getCor(i.situacao)}}" ng:repeat="i in dados.resp">
-        <div class="col col-20">{{i.sigla}}</div>
-        <div class="col col-33">{{i.descricao}}</div>
-        <div class="col col-10">{{i.valor}}</div>
-        <div class="col">{{i.faixa}}</div>
-        <div class="col">{{i.situacao}}</div>
-        <div class="col col-10"> <button class="button button-small icon ion-more" ng-click="openModal(i)"></button></div>
-      </div>
-    </div>
+  <!-- Account Tab -->
+  <ion-tab title="Não Conformidades" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/menu/naoconformidades">
+    <ion-nav-view name="menu-naoconformidades"></ion-nav-view>
+  </ion-tab>
 
-  </ion-content>
-</ion-view>
-
+</ion-tabs>

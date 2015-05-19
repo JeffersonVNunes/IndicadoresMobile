@@ -20,8 +20,16 @@ angular.module('indimobile.services',[])
     if (id_projeto == undefined )
       id_projeto = projeto.id;
 
-    return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/indicadores/'+id_projeto);
-  }
+    return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/Indicadores/'+id_projeto);
+  };
+
+  projeto.getNaoConformidades = function(id_projeto) {
+    if (id_projeto == undefined )
+      id_projeto = projeto.id;
+
+    return $http.get(SERVER.url + '/taskserver/rest/TControllerDM/NaoConformidades/'+id_projeto);
+  };
+
   return projeto;
 });
 

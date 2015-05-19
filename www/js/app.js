@@ -24,17 +24,44 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
         templateUrl: 'templates/entrada.html',
         controller: 'EntradaCtrl'
     })
-    .state('indi-menu', {
+    .state('menu', {
       url: '/menu',
       templateUrl: 'templates/menu.html',
-      controller: 'MenuCtrl',
+      abstract: true,
       resolve: {
         projeto: function(TaskServer) {
           return TaskServer
         }
       }
+    })
+    .state('menu.indicadores', {
+      url: '/indicadores',
+      views: {
+        'menu-indicadores': {
+          templateUrl: 'templates/indicadores.html',
+          controller: 'IndicadoresCtrl',
+          resolve: {
+            projeto: function(TaskServer) {
+              return TaskServer
+            }
+          }
+        }
+      }
+    })
+    .state('menu.naoconformidades', {
+      url: '/naoconformidades',
+      views: {
+        'menu-naoconformidades': {
+          templateUrl: 'templates/naoconformidades.html',
+          controller: 'NaoConformidadesCtrl',
+          resolve: {
+            projeto: function(TaskServer) {
+              return TaskServer
+            }
+          }
+        }
+      }
     });
-
   // If none of the above states are matched, use this as the fallback:
   $urlRouterProvider.otherwise('/');
 
