@@ -1,0 +1,2 @@
+C:\Projetos\Ionic\IndicadoresMobile\platforms\android\build\intermediates\classes\debug
+C:\Projetos\Ionic\IndicadoresMobile\platforms\android\build\intermediates\pre-dexed\debug\classes-bff0818a2391eec27f0b4c30af8737b2ad31148b.jar

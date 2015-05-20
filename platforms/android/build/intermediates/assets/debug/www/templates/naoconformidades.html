@@ -1,0 +1,18 @@
+<ion-view cache-view="false" view-title="Projeto {{projeto.descricao}}">
+  <ion-content class="padding">
+    <div class="list" ng-if="dados.resp">
+      <div class="row">
+        <div class="col col-50"><b>Titulo</b></div>
+        <div class="col col-20"><b>Situação</b></div>
+        <div class="col col-20"><b>Detalhes</b></div>
+      </div>
+      <div class="row {{getCor(i.resultado)}}" ng:repeat="i in dados.resp">
+        <div class="col col-50">{{i.titulo}}</div>
+        <div class="col col-20">{{getResultado(i.resultado)}}</div>
+        <div class="col col-20"> <button class="button button-small icon ion-more" ng-click="openModal(i)"></button></div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>
+

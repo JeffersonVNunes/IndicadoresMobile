@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Projetos\Ionic\IndicadoresMobile\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="bacac936398b804f02eaf50dce23fd5298da8505">
+        <dex dex="C:\Projetos\Ionic\IndicadoresMobile\platforms\android\build\intermediates\pre-dexed\debug\classes-bff0818a2391eec27f0b4c30af8737b2ad31148b.jar" />
+    </item>
+
+</items>

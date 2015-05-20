@@ -1,0 +1,26 @@
+<ion-view view-title="Entrada" cache-view="false" hide-nav-bar="true" class="entrada-page">
+  <ion-content scroll="false">
+
+    <div class="bar bar-header bar-stable">
+      <h1 class="title">Indicadores Mobile</h1>
+      <button class="button button-positive icon ion-navicon" ng-click="openModal()"></button>
+    </div>
+
+    <div class="content has-header has-footer">
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Projeto</span>
+          <input type="text" ng-model="form.id" placeholder="Digite o id do projeto">
+        </label>
+
+        <button class="button button-block button-positive " ng-click="submitForm(form.id)">
+          Entrar
+        </button>
+      </div>
+    </div>
+
+    <div class="bar bar-footer bar-stable">
+      <div class="title">{{url+':'+porta}}</div>
+    </div>
+  </ion-content>
+</ion-view>

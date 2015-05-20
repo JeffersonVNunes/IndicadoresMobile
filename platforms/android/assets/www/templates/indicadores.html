@@ -1,0 +1,21 @@
+<ion-view cache-view="false" view-title="Projeto {{projeto.descricao}}">
+  <ion-content class="padding">
+    <div class="list" ng-if="dados.resp">
+      <div class="row">
+        <div class="col col-10"><b>Sigla</b></div>
+        <div class="col col-33"><b>Descrição</b></div>
+        <div class="col col-10"><b>Valor</b></div>
+        <div class="col col-20"><b>Faixa</b></div>
+        <div class="col col-20"><b>Situação</b></div>
+      </div>
+      <div class="row {{getCor(i.situacao)}}" ng:repeat="i in dados.resp">
+        <div class="col col-10">{{i.sigla}}</div>
+        <div class="col col-33">{{i.descricao}}</div>
+        <div class="col col-10">{{i.valor}}</div>
+        <div class="col col-20">{{i.faixa}}</div>
+        <div class="col col-20">{{i.situacao}}</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+
