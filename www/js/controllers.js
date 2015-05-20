@@ -1,14 +1,49 @@
-angular.module('indimobile.controllers',[])
+angular.module('indimobile.controllers',['ionic.utils'])
 
-.controller('EntradaCtrl', function($scope, $ionicPopup, $state, TaskServer) {
-  $scope.servidor = TaskServer.servidor;
+.controller('EntradaCtrl', function($scope, $ionicPopup, $ionicModal, $state, $localstorage, TaskServer) {
+  $scope.url = TaskServer.url;
+  $scope.porta = TaskServer.porta;
+
+  $scope.GravarLocal = function(){
+    $localstorage.set('url', $scope.url);
+    TaskServer.url = $scope.url;
+
+    $localstorage.set('porta', $scope.porta);
+    TaskServer.porta = $scope.porta;
+  };
 
   $scope.showAlert = function(mensagem) {
     var alertPopup = $ionicPopup.alert({
       title: 'Aviso',
       template: mensagem
     });
-  }
+  };
+
+  $ionicModal.fromTemplateUrl('templates/servidor.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(Modal) {
+    $scope.modal = Modal
+  });
+
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+
+  $scope.closeModal = function(){
+    $scope.modal.hide();
+  };
+
+  $scope.Salvar = function() {
+    $scope.url = this.url;
+    $scope.porta = this.porta;
+    $scope.GravarLocal();
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 
   $scope.submitForm = function(id_projeto) {
 
@@ -19,7 +54,7 @@ angular.module('indimobile.controllers',[])
         TaskServer.descricao = res.data.descricao;
         TaskServer.data_inicio = res.data.datainicio;
         TaskServer.data_termino = res.data.datatermino;
-
+        //$scope.id_projeto = '';
         $state.go('menu.indicadores');
 
       }, function () {
@@ -47,26 +82,6 @@ angular.module('indimobile.controllers',[])
     projeto.getIndicadores().then(function(res){
 
       $scope.dados = res.data;
-
-      $ionicModal.fromTemplateUrl('templates/velochart.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(Modal) {
-        $scope.modal = Modal
-      });
-
-      $scope.openModal = function(sel_indi) {
-        $scope.sel_indi = sel_indi;
-        $scope.modal.show();
-      };
-
-      $scope.closeModal = function() {
-        $scope.modal.hide();
-      };
-
-      $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-      });
 
     }, function() {
       // error handling here
@@ -112,10 +127,6 @@ angular.module('indimobile.controllers',[])
 
       $scope.openModal = function(sel_nc) {
         $scope.sel_nc = sel_nc;
-
-        $scope.ResultadoFormatado = function(){
-          return $scope.sel_nc.resultado;
-        };
         $scope.modal.show();
       };
 

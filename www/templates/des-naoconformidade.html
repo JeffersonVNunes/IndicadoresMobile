@@ -1,9 +1,9 @@
 <div class="modal">
   <header class="bar bar-header bar-positive">
     <h1 class="title">{{sel_nc.titulo}}</h1>
-    <div class="button button-clear" ng-click="closeModal()"><span class="icon ion-close"></span></div>
+    <div class="button button-clear" ng-click="closeModal()"><span class="icon ion-close" ></span></div>
   </header>
-  <ion-content scroll="false">
-    <div class="content has-header">{{ResultadoFormatado()}}</div>
+  <ion-content>
+    <div class="content has-header" style="white-space: pre-line">{{sel_nc.resultado}}</div>
   </ion-content>
 </div>

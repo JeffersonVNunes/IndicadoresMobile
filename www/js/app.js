@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.services'])
+angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.services', 'ionic.ion.showWhen'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -20,7 +20,7 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('entrada', {
-        url: '/',
+        url: '/entrada',
         templateUrl: 'templates/entrada.html',
         controller: 'EntradaCtrl'
     })
@@ -63,11 +63,11 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
       }
     });
   // If none of the above states are matched, use this as the fallback:
-  $urlRouterProvider.otherwise('/');
-
+  $urlRouterProvider.otherwise('/entrada');
 })
 .constant('SERVER', {
-  url: 'http://192.168.170.44:8080'
+  url: 'http://192.168.170.44',
+  porta: '8080'
 });
 
 

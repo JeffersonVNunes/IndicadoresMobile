@@ -4,6 +4,9 @@
     <file url="file://$PROJECT_DIR$/www/js/app.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/js/controllers.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/js/services.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/des-naoconformidade.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/entrada.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/templates/menu.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/servidor.html" charset="UTF-8" />
   </component>
 </project>
