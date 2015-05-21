@@ -48,6 +48,20 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
         }
       }
     })
+    .state('menu.indicadores-chart', {
+      url: '/indicadores-chart',
+      views: {
+        'menu-indicadores': {
+          template: '<ion-view cache-view="false" view-title="{{sel_ind.sigla}}"><ion-content class="padding"><div class="chartGaugue" projeto="TaskServer"></div></ion-content></ion-view>',
+          controller: 'IndicadoresChartCtrl',
+          resolve:{
+            projeto: function(TaskServer) {
+              return TaskServer
+            }
+          }
+        }
+      }
+    })
     .state('menu.naoconformidades', {
       url: '/naoconformidades',
       views: {
