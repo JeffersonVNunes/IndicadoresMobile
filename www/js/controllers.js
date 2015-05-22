@@ -182,6 +182,68 @@ angular.module('indimobile.controllers',['ionic.utils'])
     },
     template: '<div id="container" style="margin: 0 auto">não funfa</div>',
     link: function (scope, element, attrs) {
+      var lista = [];
+
+      var getCor = function (obj){
+        if(obj.tp_classificacao == '1'){
+          return '#55BF3B';
+        }else if(obj.tp_classificacao == '2'){
+          return '#DDDF0D';
+        }else if(obj.tp_classificacao == '3'){
+          return '#DF5353';
+        }else{
+          return '#55BF3B';
+        }
+      };
+
+      var getFrom = function(obj){
+        if(obj.tp_condicao == '0') { //entre
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '1') { //igual
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '2') { //maior
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '3') { // maior ou igual
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '4') { //menor
+          return 0;
+        }else if(obj.tp_condicao == '5') { // menor ou igual
+          return 0;
+        }else if(obj.tp_condicao == '6') { // diferente
+          return 0;
+        }else{
+          return 0;
+        }
+      };
+
+      var getTo = function(obj){
+        if(obj.tp_condicao == '0') { //entre
+          return obj.segundo_valor;
+        }else if(obj.tp_condicao == '1') { //igual
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '2') { //maior
+          return obj.primeiro_valor+5;
+        }else if(obj.tp_condicao == '3') { // maior ou igual
+          return obj.primeiro_valor+5;
+        }else if(obj.tp_condicao == '4') { //menor
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '5') { // menor ou igual
+          return obj.primeiro_valor;
+        }else if(obj.tp_condicao == '6') { // diferente
+          return 0;
+        }else{
+          return 0;
+        }
+      };
+
+      scope.indicador.regras.forEach(function(value, index, ar){
+        lista.push(
+          { color: getCor(value),
+            from: Number(getFrom(value)),
+            to: Number(getTo(value))
+          }
+        );
+      });
 
       var chart = new Highcharts.Chart({
         chart: {
@@ -241,7 +303,7 @@ angular.module('indimobile.controllers',['ionic.utils'])
         }, // the value axis
         yAxis: {
           min: 0,
-          max: 15,
+          max: lista[lista.length-1].to,
           minorTickInterval: 'auto',
           minorTickWidth: 1,
           minorTickLength: 10,
@@ -259,7 +321,7 @@ angular.module('indimobile.controllers',['ionic.utils'])
           title: {
             text: ''
           },
-          plotBands: [{
+          plotBands: lista/*[{
             from: 0,
             to: 7,
             color: '#55BF3B' // green
@@ -271,7 +333,7 @@ angular.module('indimobile.controllers',['ionic.utils'])
             from: 10,
             to: 15,
             color: '#DF5353' // red
-          }]
+          }]*/
         },
         series: [{
           data: [0],
@@ -285,8 +347,18 @@ angular.module('indimobile.controllers',['ionic.utils'])
       scope.$watch("indicador", function (newValue) {
         $timeout(function () {
           var point = chart.series[0].points[0];
-          point.update(newValue.valor);
+          point.update(lista[lista.length-1].to);
         }, 600);
+
+        $timeout(function () {
+          var point = chart.series[0].points[0];
+          point.update(Number(0));
+        }, 1000);
+
+        $timeout(function () {
+          var point = chart.series[0].points[0];
+          point.update(Number(newValue.valor));
+        }, 2000);
       }, true);
 
     }
