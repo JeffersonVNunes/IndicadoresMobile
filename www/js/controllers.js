@@ -170,21 +170,20 @@ angular.module('indimobile.controllers',['ionic.utils'])
 .controller('IndicadoresChartCtrl', function($scope, $state, projeto) {
   $scope.sel_ind = projeto.sel_ind;
 })
-.directive('chartGaugue', function () {
+.directive('chartGaugue', function ($timeout) {
   return {
     restrict: 'C',
     replace: true,
     scope: {
-      items: '='
+      indicador: '='
     },
     controller: function ($scope, $element, $attrs, $injector) {
-      $scope.projeto = $injector.get($attrs.projeto);
+      //$scope.projeto = $injector.get($attrs.projeto);
     },
     template: '<div id="container" style="margin: 0 auto">não funfa</div>',
     link: function (scope, element, attrs) {
-      scope.valor = scope.projeto.sel_ind.valor.replace(/,/g,'.');
-      console.log(scope.valor);
-      scope.chart = new Highcharts.Chart({
+
+      var chart = new Highcharts.Chart({
         chart: {
           type: 'gauge',
           plotBackgroundColor: null,
@@ -197,14 +196,19 @@ angular.module('indimobile.controllers',['ionic.utils'])
           enabled: false
         },
         title: {
-          text: scope.projeto.sel_ind.sigla
+          text: ''
         },
         pane: {
-          startAngle: -150,
-          endAngle: 150,
+          startAngle: -130,
+          endAngle: 130,
           background: [{
             backgroundColor: {
-              linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+              linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+              },
               stops: [
                 [0, '#FFF'],
                 [1, '#333']
@@ -214,7 +218,12 @@ angular.module('indimobile.controllers',['ionic.utils'])
             outerRadius: '109%'
           }, {
             backgroundColor: {
-              linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+              linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+              },
               stops: [
                 [0, '#333'],
                 [1, '#FFF']
@@ -222,32 +231,29 @@ angular.module('indimobile.controllers',['ionic.utils'])
             },
             borderWidth: 1,
             outerRadius: '107%'
-          }, {
-            // default background
+          }, { // default background
           }, {
             backgroundColor: '#DDD',
             borderWidth: 0,
             outerRadius: '105%',
             innerRadius: '103%'
           }]
-        },
-        // the value axis
+        }, // the value axis
         yAxis: {
           min: 0,
-          max: 200,
+          max: 15,
           minorTickInterval: 'auto',
           minorTickWidth: 1,
           minorTickLength: 10,
           minorTickPosition: 'inside',
           minorTickColor: '#666',
-
           tickPixelInterval: 30,
           tickWidth: 2,
           tickPosition: 'inside',
           tickLength: 10,
           tickColor: '#666',
           labels: {
-            step: 2,
+            step: 1,
             rotation: 'auto'
           },
           title: {
@@ -255,28 +261,34 @@ angular.module('indimobile.controllers',['ionic.utils'])
           },
           plotBands: [{
             from: 0,
-            to: 120,
+            to: 7,
             color: '#55BF3B' // green
           }, {
-            from: 120,
-            to: 160,
+            from: 7,
+            to: 10,
             color: '#DDDF0D' // yellow
           }, {
-            from: 160,
-            to: 200,
+            from: 10,
+            to: 15,
             color: '#DF5353' // red
           }]
         },
         series: [{
           data: [0],
           tooltip: {
+            valuePrefix: '',
             valueSuffix: ' %'
           }
         }]
       });
 
-      var point = scope.chart.series[0].points[0];
-      point.update(scope.valor);
+      scope.$watch("indicador", function (newValue) {
+        $timeout(function () {
+          var point = chart.series[0].points[0];
+          point.update(newValue.valor);
+        }, 600);
+      }, true);
+
     }
   }
 });
