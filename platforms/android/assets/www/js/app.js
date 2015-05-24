@@ -27,12 +27,12 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
     .state('menu', {
       url: '/menu',
       templateUrl: 'templates/menu.html',
-      abstract: true,
-      resolve: {
-        projeto: function(TaskServer) {
-          return TaskServer
-        }
-      }
+      abstract: true
+      //resolve: {
+      //  projeto: function(TaskServer) {
+      //    return TaskServer
+      //  }
+      //}
     })
     .state('menu.indicadores', {
       url: '/indicadores',
@@ -52,7 +52,7 @@ angular.module('indimobile', ['ionic','indimobile.controllers', 'indimobile.serv
       url: '/indicadores-chart',
       views: {
         'menu-indicadores': {
-          template: '<ion-view cache-view="false" view-title="{{sel_ind.sigla}}"><ion-content class="padding"><div class="chartGaugue" indicador="sel_ind"></div></ion-content></ion-view>',
+          template: '<ion-view cache-view="false" view-title="{{sel_ind.sigla}}"><ion-content scroll="false"><div class="chartGaugue" indicador="sel_ind"></div></ion-content></ion-view>',
           controller: 'IndicadoresChartCtrl',
           resolve:{
             projeto: function(TaskServer) {

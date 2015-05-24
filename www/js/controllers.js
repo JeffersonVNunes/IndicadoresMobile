@@ -71,6 +71,10 @@ angular.module('indimobile.controllers',['ionic.utils'])
   $scope.projeto = projeto;
   $scope.dados = 'Não Carregado';
 
+  $scope.goNao = function(){
+    $state.go('menu.naoconformidades');
+  };
+
   $scope.showAlert = function(mensagem) {
     var alertPopup = $ionicPopup.alert({
       title: 'Aviso',
@@ -111,6 +115,10 @@ angular.module('indimobile.controllers',['ionic.utils'])
 .controller('NaoConformidadesCtrl', function($scope, $ionicPopup, $ionicModal, $state, projeto) {
   $scope.projeto = projeto;
   $scope.dados = 'Não Carregado';
+
+  $scope.goInd = function(){
+    $state.go('menu.indicadores');
+  };
 
   $scope.showAlert = function(mensagem) {
     var alertPopup = $ionicPopup.alert({
@@ -177,190 +185,203 @@ angular.module('indimobile.controllers',['ionic.utils'])
     scope: {
       indicador: '='
     },
-    controller: function ($scope, $element, $attrs, $injector) {
-      //$scope.projeto = $injector.get($attrs.projeto);
+    controller: function ($scope, $element, $attrs) {
+
     },
-    template: '<div id="container" style="margin: 0 auto">não funfa</div>',
+    template: '<div></div>',
     link: function (scope, element, attrs) {
-      var lista = [];
+      $timeout(function () {
+        var lista = [],
+        minv = 99999999,
+        maxv = 0;
 
-      var getCor = function (obj){
-        if(obj.tp_classificacao == '1'){
-          return '#55BF3B';
-        }else if(obj.tp_classificacao == '2'){
-          return '#DDDF0D';
-        }else if(obj.tp_classificacao == '3'){
-          return '#DF5353';
-        }else{
-          return '#55BF3B';
-        }
-      };
+        var getCor = function (obj) {
+          if (obj.tp_classificacao == '1') {
+            return '#55BF3B'; // green
+          } else if (obj.tp_classificacao == '2') {
+            return '#DDDF0D'; // yellow
+          } else if (obj.tp_classificacao == '3') {
+            return '#DF5353'; // red
+          } else {
+            return '#55BF3B'; // green
+          }
+        };
 
-      var getFrom = function(obj){
-        if(obj.tp_condicao == '0') { //entre
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '1') { //igual
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '2') { //maior
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '3') { // maior ou igual
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '4') { //menor
-          return 0;
-        }else if(obj.tp_condicao == '5') { // menor ou igual
-          return 0;
-        }else if(obj.tp_condicao == '6') { // diferente
-          return 0;
-        }else{
-          return 0;
-        }
-      };
+        var getFrom = function (obj) {
+          if (obj.tp_condicao == '0') { //entre
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '1') { //igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '2') { //maior
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '3') { // maior ou igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '4') { //menor
+            if (Number(obj.primeiro_valor) / 2 > 5) {
+              return Number(obj.primeiro_valor) / 2;
+            } else {
+              return 0;
+            }
+          } else if (obj.tp_condicao == '5') { // menor ou igual
+            if (Number(obj.primeiro_valor) / 2 > 5) {
+              return Number(obj.primeiro_valor) / 2;
+            } else {
+              return 0;
+            }
+          } else if (obj.tp_condicao == '6') { // diferente
+            return 0;
+          } else {
+            return 0;
+          }
+        };
 
-      var getTo = function(obj){
-        if(obj.tp_condicao == '0') { //entre
-          return obj.segundo_valor;
-        }else if(obj.tp_condicao == '1') { //igual
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '2') { //maior
-          return obj.primeiro_valor+5;
-        }else if(obj.tp_condicao == '3') { // maior ou igual
-          return obj.primeiro_valor+5;
-        }else if(obj.tp_condicao == '4') { //menor
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '5') { // menor ou igual
-          return obj.primeiro_valor;
-        }else if(obj.tp_condicao == '6') { // diferente
-          return 0;
-        }else{
-          return 0;
-        }
-      };
+        var getTo = function (obj) {
+          if (obj.tp_condicao == '0') { //entre
+            return obj.segundo_valor;
+          } else if (obj.tp_condicao == '1') { //igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '2') { //maior
+            return Number(obj.primeiro_valor) + Number(obj.primeiro_valor) / 2;
+          } else if (obj.tp_condicao == '3') { // maior ou igual
+            return Number(obj.primeiro_valor) + Number(obj.primeiro_valor) / 2;
+          } else if (obj.tp_condicao == '4') { //menor
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '5') { // menor ou igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '6') { // diferente
+            return 0;
+          } else {
+            return 0;
+          }
+        };
 
-      scope.indicador.regras.forEach(function(value, index, ar){
-        lista.push(
-          { color: getCor(value),
+        scope.indicador.regras.forEach(function (value, index, ar) {
+
+          lista.push(
+          {
+            color: getCor(value),
             from: Number(getFrom(value)),
             to: Number(getTo(value))
           }
-        );
-      });
+          );
 
-      var chart = new Highcharts.Chart({
-        chart: {
-          type: 'gauge',
-          plotBackgroundColor: null,
-          plotBackgroundImage: null,
-          plotBorderWidth: 0,
-          plotShadow: false,
-          renderTo: 'container'
-        },
-        credits:{
-          enabled: false
-        },
-        title: {
-          text: ''
-        },
-        pane: {
-          startAngle: -130,
-          endAngle: 130,
-          background: [{
-            backgroundColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-              },
-              stops: [
-                [0, '#FFF'],
-                [1, '#333']
-              ]
-            },
-            borderWidth: 0,
-            outerRadius: '109%'
-          }, {
-            backgroundColor: {
-              linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
-              },
-              stops: [
-                [0, '#333'],
-                [1, '#FFF']
-              ]
-            },
-            borderWidth: 1,
-            outerRadius: '107%'
-          }, { // default background
-          }, {
-            backgroundColor: '#DDD',
-            borderWidth: 0,
-            outerRadius: '105%',
-            innerRadius: '103%'
-          }]
-        }, // the value axis
-        yAxis: {
-          min: 0,
-          max: lista[lista.length-1].to,
-          minorTickInterval: 'auto',
-          minorTickWidth: 1,
-          minorTickLength: 10,
-          minorTickPosition: 'inside',
-          minorTickColor: '#666',
-          tickPixelInterval: 30,
-          tickWidth: 2,
-          tickPosition: 'inside',
-          tickLength: 10,
-          tickColor: '#666',
-          labels: {
-            step: 1,
-            rotation: 'auto'
+          if (minv > lista[index].from) {
+            minv = lista[index].from;
+          };
+
+          if (maxv < lista[index].to) {
+            maxv = lista[index].to;
+          };
+
+        });
+
+        var chart = new Highcharts.Chart({
+          chart: {
+            type: 'gauge',
+            plotBackgroundColor: null,
+            plotBackgroundImage: null,
+            plotBorderWidth: 0,
+            plotShadow: false,
+            renderTo: element[0]
+          },navigator: {
+            enabled: false
+          },
+          credits: {
+            enabled: false
           },
           title: {
             text: ''
           },
-          plotBands: lista/*[{
-            from: 0,
-            to: 7,
-            color: '#55BF3B' // green
-          }, {
-            from: 7,
-            to: 10,
-            color: '#DDDF0D' // yellow
-          }, {
-            from: 10,
-            to: 15,
-            color: '#DF5353' // red
-          }]*/
-        },
-        series: [{
-          data: [0],
-          tooltip: {
-            valuePrefix: '',
-            valueSuffix: ' %'
-          }
-        }]
-      });
+          pane: {
+            startAngle: -130,
+            endAngle: 130,
+            background: [{
+              backgroundColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, '#FFF'],
+                  [1, '#333']
+                ]
+              },
+              borderWidth: 0,
+              outerRadius: '109%'
+            }, {
+              backgroundColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, '#333'],
+                  [1, '#FFF']
+                ]
+              },
+              borderWidth: 1,
+              outerRadius: '107%'
+            }, { // default background
+            }, {
+              backgroundColor: '#DDD',
+              borderWidth: 0,
+              outerRadius: '105%',
+              innerRadius: '103%'
+            }]
+          }, // the value axis
+          yAxis: {
+            min: minv,
+            max: maxv,
+            minorTickInterval: 'auto',
+            minorTickWidth: 1,
+            minorTickLength: 10,
+            minorTickPosition: 'inside',
+            minorTickColor: '#666',
+            tickPixelInterval: 30,
+            tickWidth: 2,
+            tickPosition: 'inside',
+            tickLength: 10,
+            tickColor: '#666',
+            labels: {
+              step: 1,
+              rotation: 'auto'
+            },
+            title: {
+              text: ''
+            },
+            plotBands: lista
+          },
+          series: [{
+            data: [minv],
+            tooltip: {
+              valuePrefix: '',
+              valueSuffix: ' %'
+            }
+          }]
+        });
 
-      scope.$watch("indicador", function (newValue) {
-        $timeout(function () {
-          var point = chart.series[0].points[0];
-          point.update(lista[lista.length-1].to);
-        }, 600);
+        scope.$watch("indicador", function (newValue) {
+           //$timeout(function () {
+           //var point = chart.series[0].points[0];
+           //point.update(maxv+1);
+           //}, 600);
+           //
+           //$timeout(function () {
+           //var point = chart.series[0].points[0];
+           //point.update(minv);
+           //}, 1000);
 
-        $timeout(function () {
-          var point = chart.series[0].points[0];
-          point.update(Number(0));
-        }, 1000);
+          $timeout(function () {
+            var point = chart.series[0].points[0];
+            point.update(Number(newValue.valor));
 
-        $timeout(function () {
-          var point = chart.series[0].points[0];
-          point.update(Number(newValue.valor));
-        }, 2000);
-      }, true);
-
+          }, 600);
+        }, true);
+      },0);
     }
   }
 });

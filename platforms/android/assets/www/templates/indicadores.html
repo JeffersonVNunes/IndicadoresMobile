@@ -1,6 +1,6 @@
 <ion-view cache-view="false" view-title="Projeto {{projeto.descricao}}">
   <ion-content class="padding">
-    <div class="list" ng-if="dados.resp">
+    <div class="list" ng-if="dados.resp" on-swipe-left="goNao()">
       <div class="row">
         <div class="col col-10"><b>Sigla</b></div>
         <div class="col col-33"><b>Descrição</b></div>
