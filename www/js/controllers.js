@@ -176,6 +176,11 @@ angular.module('indimobile.controllers',['ionic.utils'])
   $scope.getNaoConformidades();
 })
 .controller('IndicadoresChartCtrl', function($scope, $state, projeto) {
+
+  $scope.goNao = function(){
+    $state.go('menu.naoconformidades');
+  };
+
   $scope.sel_ind = projeto.sel_ind;
 })
 .directive('chartGaugue', function ($timeout) {
