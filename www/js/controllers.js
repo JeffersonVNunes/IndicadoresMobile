@@ -183,7 +183,7 @@ angular.module('indimobile.controllers',['ionic.utils'])
 
   $scope.sel_ind = projeto.sel_ind;
 })
-.directive('chartGaugue', function ($timeout) {
+.directive('chartGaugueHC', function ($timeout) {
   return {
     restrict: 'C',
     replace: true,
@@ -384,6 +384,144 @@ angular.module('indimobile.controllers',['ionic.utils'])
             var point = chart.series[0].points[0];
             point.update(Number(newValue.valor));
 
+          }, 600);
+        }, true);
+      },0);
+    }
+  }
+})
+.directive('chartGaugueAM', function ($timeout) {
+  return {
+    restrict: 'C',
+    replace: true,
+    scope: {
+      indicador: '='
+    },
+    controller: function ($scope, $element, $attrs) {
+
+    },
+    template: '<div class="chartam"></div>',
+    link: function (scope, element, attrs) {
+      $timeout(function () {
+        var lista = [],
+        minv = 99999999,
+        maxv = 0,
+        interval = 1;
+
+        var getCor = function (obj) {
+          if (obj.tp_classificacao == '1') {
+            return '#55BF3B'; // green
+          } else if (obj.tp_classificacao == '2') {
+            return '#DDDF0D'; // yellow
+          } else if (obj.tp_classificacao == '3') {
+            return '#DF5353'; // red
+          } else {
+            return '#55BF3B'; // green
+          }
+        };
+
+        var getFrom = function (obj) {
+          if (obj.tp_condicao == '0') { //entre
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '1') { //igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '2') { //maior
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '3') { // maior ou igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '4') { //menor
+            if (Number(obj.primeiro_valor) / 2 > 5) {
+              return Number(obj.primeiro_valor) / 2;
+            } else {
+              return 0;
+            }
+          } else if (obj.tp_condicao == '5') { // menor ou igual
+            if (Number(obj.primeiro_valor) / 2 > 5) {
+              return Number(obj.primeiro_valor) / 2;
+            } else {
+              return 0;
+            }
+          } else if (obj.tp_condicao == '6') { // diferente
+            return 0;
+          } else {
+            return 0;
+          }
+        };
+
+        var getTo = function (obj) {
+          if (obj.tp_condicao == '0') { //entre
+            return obj.segundo_valor;
+          } else if (obj.tp_condicao == '1') { //igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '2') { //maior
+            return Number(obj.primeiro_valor) + Number(obj.primeiro_valor) / 2;
+          } else if (obj.tp_condicao == '3') { // maior ou igual
+            return Number(obj.primeiro_valor) + Number(obj.primeiro_valor) / 2;
+          } else if (obj.tp_condicao == '4') { //menor
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '5') { // menor ou igual
+            return obj.primeiro_valor;
+          } else if (obj.tp_condicao == '6') { // diferente
+            return 0;
+          } else {
+            return 0;
+          }
+        };
+
+        scope.indicador.regras.forEach(function (value, index, ar) {
+
+          lista.push(
+          {
+            color: getCor(value),
+            startValue: Number(getFrom(value)),
+            endValue: Number(getTo(value))
+          }
+          );
+
+          if (minv > lista[index].startValue) {
+            minv = lista[index].startValue;
+          };
+
+          if (maxv < lista[index].endValue) {
+            maxv = lista[index].endValue;
+          };
+
+        });
+
+        var chart = new AmCharts.makeChart( element[0], {
+          "type": "gauge",
+          "theme": "light",
+          "path": "lib/amcharts/",
+          "axes": [ {
+            "axisThickness": 1,
+            "axisAlpha": 0.2,
+            "tickAlpha": 0.2,
+            "valueInterval": 1,
+            "bands": lista,
+            "bottomText": "15 km/h",
+            "bottomTextYOffset": -20,
+            "endValue": maxv,
+            "startValue": minv
+          } ],
+          "arrows": [ {} ],
+          "export": {
+            "enabled": true
+          }
+        } );
+
+        scope.$watch("indicador", function (newValue) {
+
+          $timeout(function () {
+            if ( chart ) {
+              if ( chart.arrows ) {
+                if ( chart.arrows[ 0 ] ) {
+                  if ( chart.arrows[ 0 ].setValue ) {
+                    chart.arrows[ 0 ].setValue( Number(newValue.valor) );
+                    chart.axes[ 0 ].setBottomText( newValue.valor +" "+ newValue.sigla);
+                  }
+                }
+              }
+            }
           }, 600);
         }, true);
       },0);
